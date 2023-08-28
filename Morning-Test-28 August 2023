@@ -18,3 +18,88 @@ VALUES
 (5, 'Rahul', 19, '654 Maple St');
 
 
+Question 12: Write an SQL query to find the youngest student in the "student" table ?
+
+SELECT *
+FROM Student
+ORDER BY Age ASC
+LIMIT 1;
+
+Question 13: Write an SQL query to retrieve the names and addresses of all persons from the "Person" table along with their corresponding addresses from the "Address" table.
+
+SELECT Person.Name, Address.Address
+FROM Person
+INNER JOIN Address ON Person.person_id = Address.person_id;
+
+Question 14.  Write an SQL query to fetch the second highest number from the "student" table.? 
+
+SELECT MAX(Number) AS SecondHighestAge
+FROM Student
+WHERE Age < (SELECT MAX(Number) FROM Student);
+
+Question 15.  SQL Quary to get the nth highest salary from Employee table?
+
+SELECT DISTINCT Salary
+FROM Employee E1
+WHERE n = (
+    SELECT COUNT(DISTINCT Salary)
+    FROM Employee E2
+    WHERE E2.Salary >= E1.Salary
+);
+
+
+Question 16. Write a SQL query to find the median salary of each company.? 
+
+SELECT Company, MEDIAN(Salary) AS MedianSalary
+FROM Employee
+GROUP BY Company;
+
+
+Question 17.  Write a SQL to get the cumulative sum of an employee’s salary over a period of 3 month but exclude the most recent month? The result should be display by id ascending and then by month decending ?
+SELECT
+    ID,
+    Month,
+    SUM(Salary) OVER (PARTITION BY ID ORDER BY Month DESC ROWS BETWEEN 2 PRECEDING AND 1 PRECEDING) AS CumulativeSum
+FROM
+    Employee
+
+Quesyion 18 : Write the Query to find the Shortest Distance in Plane 
+
+SELECT
+    SQRT(X*X + Y*Y) AS ShortestDistance
+FROM
+    Coordinates;
+
+Question 19.  Consider a database with two tables: "Orders" and "Customers." Write an SQL query to retrieve the top 5 customers who have made the most orders, along with the total count of their orders. Display the results in descending order of the order count and ascending order of customer names.
+
+SELECT
+    C.CustomerName,
+    COUNT(O.OrderID) AS OrderCount
+FROM
+    Customers C
+INNER JOIN
+    Orders O ON C.CustomerID = O.CustomerID
+GROUP BY
+    C.CustomerName
+ORDER BY
+    OrderCount DESC,
+    C.CustomerName ASC
+LIMIT 5;
+
+Question 20.  Consider a database schema that represents an online bookstore with two tables: books and orders. The books table has columns: book_id, title, author, price, and stock_quantity. The orders table has columns: order_id, book_id, quantity, and order_date.Write an SQL query to find the top 3 bestselling products in terms of total quantity sold, along with their names and total quantities sold.
+
+SELECT
+    B.title AS ProductName,
+    SUM(O.quantity) AS TotalQuantitySold
+FROM
+    books B
+JOIN
+    orders O ON B.book_id = O.book_id
+GROUP BY
+    B.title
+ORDER BY
+    TotalQuantitySold DESC
+LIMIT 3;
+
+
+
